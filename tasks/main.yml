@@ -1,0 +1,106 @@
+---
+- name: Update OS package caches for Debian
+  apt:
+    update_cache: yes
+  when: ansible_facts['os_family'] == 'Debian'
+  tags:
+    - zabbix-agent
+    - package
+    - zabbix-agent-update-os-packages
+
+- name: Update OS package caches for CentOS
+  dnf:
+    update_cache: yes
+  when: ansible_facts['os_family'] == 'RedHat'
+  tags:
+    - zabbix-agent
+    - package
+    - zabbix-agent-update-os-packages
+
+- name: Install zabbix rpm key for CentOS
+  command: "rpm -Uvh {{ zabbix_agent_rpm }}"
+  changed_when: false
+  when: ansible_facts['os_family'] == 'RedHat'
+  tags:
+    - zabbix-agent
+    - package
+    - zabbix-agent-update-os-packages
+
+- name: Update OS packages
+  package:
+    name: '*'
+    state: latest
+  tags:
+    - zabbix-agent
+    - package
+    - zabbix-agent-update-os-packages
+
+- name: Install OS packages for Debain
+  package:
+    name: "{{ zabbix_agent_debian_install }}"
+    state: latest
+  when: ansible_facts['os_family'] == 'Debian'
+  tags:
+    - zabbix-agent
+    - package
+    - zabbix-agent-install-os-packages
+
+- name: Install OS packages for CentOS
+  package:
+    name: "{{ zabbix_agent_redhat_install }}"
+    state: latest
+  when: ansible_facts['os_family'] == 'RedHat'
+  tags:
+    - zabbix-agent
+    - package
+    - zabbix-agent-install-os-packages
+
+- name: Configure zabbix agent
+  template:
+    src: "{{ ansible_facts['os_family'] }}/{{ item.lstrip('/') }}.j2"
+    dest: "{{ item }}"
+    owner: root
+    group: root
+    mode: 0644
+  with_items: "{{ zabbix_agentd_conf_path }}"
+  notify: Restart zabbix-agent
+  tags:
+    - zabbix-agent
+    - configuration
+    - zabbix-agent-configure-agent
+
+- name: Create zabbix agent optional config directory
+  file:
+    path: "{{ zabbix_agentd_d_dir.rstrip('/') }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+  tags:
+    - zabbix-agent
+    - configuration
+    - zabbix-agent-create-zabbix-agentd-directory
+
+- name: Copy zabbix_agentd.d configs
+  template:
+    src: "{{ ansible_facts['os_family'] }}/{{ zabbix_agentd_d_dir.rstrip('/') }}/{{ item }}.j2"
+    dest: "{{ zabbix_agentd_d_dir.rstrip('/') }}/{{ item }}"
+    owner: root
+    group: root
+    mode: 0644
+  with_items: "{{ zabbix_agentd_d_files }}"
+  notify: restart zabbix-agent
+  tags:
+    - zabbix-agent
+    - configuration
+    - zabbix-agent-copy-zabbix-agentd-configurations
+
+- name: Ensure zabbix agent started
+  service:
+    name: zabbix-agent
+    state: started
+    enabled: true
+  tags:
+    - zabbix-agent
+    - configuration
+    - zabbix-agent-copy-zabbix-agent-d-configurations
