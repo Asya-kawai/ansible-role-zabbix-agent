@@ -274,7 +274,7 @@ HostMetadata={{ zabbix_agent_config_host_meta_data }}
 
 # Include=/etc/zabbix/zabbix_agentd.userparams.conf
 # Include=/etc/zabbix/zabbix_agentd.conf.d/
-Include={{ zabbix_agentd_d_dir.rstrip('/') }}/*.conf
+Include={{ zabbix_agentd_d_dir.rstrip('/') | trim }}/*.conf
 
 ####### USER-DEFINED MONITORED PARAMETERS #######
 

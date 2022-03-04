@@ -319,7 +319,7 @@ HostMetadata={{ zabbix_agent_config_host_meta_data }}
 # Mandatory: no
 # Default:
 # Include=
-Include={{ zabbix_agentd_d_dir.rstrip('/') }}/*.conf
+Include={{ zabbix_agentd_d_dir.rstrip('/') | trim }}/*.conf
 
 # Include=/usr/local/etc/zabbix_agentd.userparams.conf
 # Include=/usr/local/etc/zabbix_agentd.conf.d/

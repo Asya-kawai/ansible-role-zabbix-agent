@@ -1,7 +1,9 @@
 ---
 zabbix_agent_debian_install:
   - zabbix-agent
+# Install redhat-lsb-core to refer ansible_lsb.major_release.
 zabbix_agent_redhat_install:
+  - redhat-lsb-core
   - zabbix-agent
 
 # Reference: https://www.zabbix.com/download?zabbix=6.0&os_distribution=red_hat_enterprise_linux&os_version=8&db=mysql

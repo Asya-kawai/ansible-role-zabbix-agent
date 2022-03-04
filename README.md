@@ -1,8 +1,8 @@
 # Ansible Role For Zabbix agent Setting
 
-It's forked from [ansible-role-zabbix-agent](https://github.com/resmo/ansible-role-zabbix-agent).
-
 [![CI](https://github.com/Asya-kawai/ansible-role-zabbix-agent/actions/workflows/ci.yml/badge.svg)](https://github.com/Asya-kawai/ansible-role-zabbix-agent/actions/workflows?query=workflow%3ACI)
+
+It's forked from [ansible-role-zabbix-agent](https://github.com/resmo/ansible-role-zabbix-agent).
 
 Setup zabbix agent.
 
