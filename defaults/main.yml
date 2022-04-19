@@ -2,11 +2,17 @@
 zabbix_agent_debian_install:
   - zabbix-agent
 zabbix_agent_redhat_install:
+  - redhat-lsb-core
   - zabbix-agent
+
+# The error occurred that does not have attribute 'major_release'.
+# We should define OS major_release version for RedHat.
+# No longer to use redhat-lsb-core, but remain it.
+zabbix_agent_redhat_os_version: 8
 
 # Reference: https://www.zabbix.com/download?zabbix=6.0&os_distribution=red_hat_enterprise_linux&os_version=8&db=mysql
 zabbix_agent_version: '6.0'
-zabbix_agent_rpm: "https://repo.zabbix.com/zabbix/{{ zabbix_agent_version }}/rhel/{{ ansible_lsb.major_release }}/{{ ansible_architecture }}/zabbix-release-{{ zabbix_agent_version }}-1.el{{ ansible_lsb.major_release }}.noarch.rpm"
+zabbix_agent_rpm: "https://repo.zabbix.com/zabbix/{{ zabbix_agent_version }}/rhel/{{ zabbix_agent_redhat_os_version }}/{{ ansible_architecture }}/zabbix-release-{{ zabbix_agent_version }}-1.el{{ zabbix_agent_redhat_os_version }}.noarch.rpm"
 
 zabbix_agent_config_server: 127.0.0.1
 zabbix_agent_config_listen_ip: 0.0.0.0
