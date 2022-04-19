@@ -18,11 +18,9 @@
     - zabbix-agent-update-os-packages
 
 - name: Install zabbix rpm for CentOS
-  command: "rpm -Uvh {{ zabbix_agent_rpm }}"
-  register: zabbix_agent_rpm_install_result
-  changed_when: false
-  failed_when:
-    - '"already installed" not in zabbix_agent_rpm_install_result.stderr'
+  rpm_key:
+    state: present
+    key: "{{ zabbix_agent_rpm }}"
   when: ansible_facts['os_family'] == 'RedHat'
   tags:
     - zabbix-agent
