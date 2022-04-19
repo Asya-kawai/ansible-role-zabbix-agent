@@ -42,7 +42,7 @@ jobs:
         include:
           - distro: ubuntu1804
           - distro: ubuntu2004
-          - distro: centos8
+          # - distro: centos8
 
     steps:
       - name: Check out the codebase
