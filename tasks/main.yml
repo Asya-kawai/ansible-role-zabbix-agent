@@ -49,9 +49,11 @@
     - zabbix-agent-install-lsb-core
 
 - name: Install zabbix rpm for CentOS
-  yum:
-    name: "{{ zabbix_agent_rpm }}"
-    state: present
+  command: "rpm -Uvh {{ zabbix_agent_rpm }}"
+  register: zabbix_agent_rpm_install_result
+  changed_when: false
+  failed_when:
+    - '"already installed" not in zabbix_agent_rpm_install_result.stderr'
   when: ansible_facts['os_family'] == 'RedHat'
   tags:
     - zabbix-agent
