@@ -48,6 +48,18 @@
     - package
     - zabbix-agent-install-os-packages
 
+# Install redhat-lsb-core to refer ansible_lsb.major_release.
+- name: Install OS packages for CentOS
+  package:
+    name: redhat-lsb-core
+    state: latest
+  when:
+    - ansible_facts['os_family'] == 'RedHat'
+  tags:
+    - zabbix-agent
+    - package
+    - zabbix-agent-install-lsb-core
+
 - name: Install OS packages for CentOS
   package:
     name: "{{ zabbix_agent_redhat_install }}"
