@@ -86,7 +86,7 @@
 
 - name: Create zabbix agent optional config directory
   file:
-    path: "{{ zabbix_agentd_d_dir.rstrip('/') }}"
+    path: "{{ zabbix_agentd_d_dir.rstrip('/') | trim }}"
     state: directory
     owner: root
     group: root
